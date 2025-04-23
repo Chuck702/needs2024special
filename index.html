@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <title>PDF.js 예시</title>
+  <!-- PDF.js 라이브러리 추가 (CDN) -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.10.377/pdf.min.js"></script>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+    }
+    canvas {
+      border: 1px solid black;
+    }
+  </style>
+</head>
+<body>
+  <h1>2024_특별주제.pdf 보기</h1>
+  
+  <!-- PDF가 표시될 캔버스 -->
+  <canvas id="pdf-canvas"></canvas>
+
+  <script>
+    // PDF 파일 URL (같은 폴더에 있을 경우)
+    const pdfUrl = '2024_특별주제.pdf';
+
+    // PDF.js로 PDF 문서 불러오기
+    pdfjsLib.getDocument(pdfUrl).promise.then(function(pdfDoc) {
+      // 첫 번째 페이지 가져오기
+      pdfDoc.getPage(1).then(function(page) {
+        // 캔버스 설정
+        var canvas = document.getElementById('pdf-canvas');
+        var context = canvas.getContext('2d');
+        var viewport = page.getViewport({ scale: 1 });
+
+        canvas.height = viewport.height;
+        canvas.width = viewport.width;
+
+        // 페이지 렌더링
+        page.render({
+          canvasContext: context,
+          viewport: viewport
+        });
+      });
+    });
+  </script>
+</body>
+</html>
